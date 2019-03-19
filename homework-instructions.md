@@ -132,3 +132,35 @@ After completing the homework please add the piece to your portfolio. Make sure 
 If you have any questions about this project or the material we have covered, please post them in the community channels in slack so that your fellow developers can help you! If you're still having trouble, you can come to office hours for assistance from your instructor and TAs.
 
 **Good Luck!**
+
+
+<input type = "text" id = "letter" name = "letter" />
+<input type = "button" onClick="checkLetter();" value = "OK" id= "btn_OK" />
+
+
+        //this part creates the number of stripes depending on your word.
+        //this part also breaks up the complete word into an array.
+        var word = "programming";
+        var letters = word.length;
+        var loose_letters = new Array();
+        var stripes = new Array();
+
+        for(i = 0; i <= letters; i++)
+        {
+           stripes[i] = "_";
+           loose_letters[i] = word.substring(i, i+1);
+        }
+
+        function checkLetter()
+{
+   letter = document.getElementById("letter").value;
+
+   for(i = 0; i < letters; i++)
+   {
+     if(letter == loose_letters[i])
+     {
+        stripes[i] = letter;
+     }
+     var complete_string += stripes[i]
+   }     
+}
