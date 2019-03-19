@@ -1,0 +1,27 @@
+body {
+    color: whitesmoke;
+    background-color: black;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+h1 {
+    text-align: center;
+}
+
+.row {
+    text-align: center;
+}
+
+.Yosemite {
+    align-content: center;
+    margin-top: 20px;
+}
+
+
+
+.col-md-6 {
+    border: dashed white 1px;
+    height: 500px;
+    /* text-align: left; */
+}
