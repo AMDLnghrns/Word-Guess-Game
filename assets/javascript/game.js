@@ -20,42 +20,32 @@ var guess;
 //Creating words in the game
 var wordOptions = ['Great Smoky Mountains', 'Grand Canyon', 'Yosemite Valley', 'Rocky Mountains', 'Zion', 'Yellowstone', 'Grand Teton', 'Glacier', 'Joshua Tree', 'Cuyahoga Valley', 'Bryce Canyon', 'Hawaii Volcanoes', 'Hot Springs', 'Shenandoah', 'Mount Rainier', 'Death Valley', 'Halekala', 'Sequoia', 'Capitol Reef', 'Badlands', 'Everglades', 'Saguaro', 'Canyonlands', 'Crater Lake', 'Theodore Roosevelt', 'Petrified Forest', 'Wind Cave', 'Kings Canyon', 'Denali', 'Mammoth Cave', 'Mesa Verde', 'Redwood', 'Lassen Volcanic', 'Glacier Bay', 'Biscayne', 'Carlsbad Caverns', 'Virgin Islands', 'Great Sand Dunes', 'Big Bend', 'Channel Islands', 'Kenai Fjords', 'Voyageurs', 'Black Canyon of the Gunnison', 'Pinnacles', 'Guadalupe', 'Great Basin', 'Congaree', 'Wrangell St', 'Dry Tortugas', 'Katmai', 'American Samoa', 'North Cascades', 'Isle Royale', 'Lake Clarke', 'Kobuk Valley', 'Gates of the Arctic'];
 var currentWord = wordOptions[Math.floor(Math.random() * options.length)].split(/(?!$)/u);
-console.log(currentWord)
+var splice = currentWord.join(' ');
+var lowerSplice = splice.toLowerCase();
+console.log(lowerSplice);
 
 // Captures keyboard input. Depending on the letter pressed it will "call" (execute) different functions.
 document.onkeyup = function (event) {
     // Captures the key press, converts it to lowercase, and saves it to a variable.
     var letter = event.key.toLowerCase();
     // If the letter is equal to the computer guess, run the following functions/methods.
-    console.log(letter)
+    console.log(letter);
 
-
-    if (currentWord.includes(letter)) {
-        wins++;
+    if (lowerSplice.includes(letter)) {
+        alert('Yes');
         console.log(guessesMade);
-        guessesLeft = 15;
-        guessesMade = [];
-        currentWord = options[Math.floor(Math.random() * options.length)];
     } else {
-        if (guessesLeft > 1) {
-            //For-loop...
-            for (var i = 1; i < 2; i++) {
-                //...pushing the letter chosen to the guesses made array
-                guess = letter;
-                guessesMade.push(guess)
-            };
-            console.log(guessesMade);
-            guessesLeft--;
-        } else {
-            losses++;
-            guessesLeft = 15;
-            guessesMade = [];
-            console.log(guessesMade);
-            currentWord = options[Math.floor(Math.random() * options.length)];
-        }
+        // For-loop...
+        for (var i = 1; i < 2; i++) {
+            //...pushing the letter chosen to the guesses made array
+            guess = letter;
+            guessesMade.push(guess)
+        };
+        console.log(guessesMade);
+        guessesLeft--;
+        console.log(guessesLeft);
     }
 }
-
 
 var html = "<p>Press any key to get started!</p>" +
     "<p>Wins: " + wins + "</p>" +
@@ -67,3 +57,41 @@ var html = "<p>Press any key to get started!</p>" +
     "<p>Guessed letters: " + guessesMade + "</p>";
 
 document.querySelector('#Stats').innerHTML = html;
+
+
+// need to find a way to hide the letters
+// need to find 
+
+
+// loop to replace the letters
+// indexOf to find if value is in the array (if -1, not in the list)
+
+// Notes:
+// if user guesses a correct letter, they still have more guesses and they still haven't solved the word
+//     push letter to guesses array: 
+//         // For-loop...
+//             for (var i = 1; i < 2; i++) {
+//             //...pushing the letter chosen to the guesses made array
+//             guess = letter;
+//             guessesMade.push(guess)
+//         };
+//     lower guesses left by one: guessesLeft--;
+
+// if the user solves the word:
+//     add one to wins: wins++;
+//     reset guessesleft: guessesLeft = 15;
+//     reset word: currentWord = options[Math.floor(Math.random() * options.length)];
+//     set guesses made to blank: guessesMade = [];
+
+// if the user fails to solve the word:
+//     add one to losses: losses++;
+//     reset guessesleft: guessesLeft = 15;
+//     reset word: currentWord = options[Math.floor(Math.random() * options.length)];
+//     set guesses made to blank: guessesMade = [];    
+
+
+
+
+
+
+
