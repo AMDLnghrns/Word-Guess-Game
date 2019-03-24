@@ -1,5 +1,5 @@
 //Game words
-var characters = ['mountains', 'canyon', 'rocky', 'zion', 'glacier','wind cave', 'denali','biscayne','kenai fjords','basin','isle', 'lake'];
+var characters = ['mountains', 'rocky', 'zion', 'glacier','wind cave', 'denali','biscayne','kenai fjords','basin','isle', 'lake'];
 //Word that is selected from 
 var secretWord = '';
 //user's array that stores "_" blanks initially
