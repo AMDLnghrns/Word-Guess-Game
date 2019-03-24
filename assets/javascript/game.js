@@ -1,94 +1,159 @@
-// VARIABLES 
-// ======================================================================================================
+//Game words
+var characters = ['mountains', 'canyon', 'rocky', 'zion', 'glacier','wind cave', 'denali','biscayne','kenai fjords','basin','isle', 'lake'];
+//Word that is selected from 
+var secretWord = '';
+//user's array that stores "_" blanks initially
+var usersArray = [];
+//letters used
+var wrongWordArray = [];
+//puts selected word into array of strings
+var logged = "";
+//stores which index the userInput equals inside of the logged[]
+var indx;
+//key the user pressed
+var userInput = "";
 
-//Choices for the game
-var options = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-//Starting number of Wins
+//Starting number of wins
 var wins = 0;
-
 //Starting number of losses
 var losses = 0;
+//Starting number of guesses
+var guessesLeft = 0;
 
-//Starting number of guesses left
-var guessesLeft = 15;
 
-//Creating an empty array for guesses
-var guessesMade = [];
-var guess;
+//vars with document id's for html printing
+var winsText = document.getElementById("wins");
+var lossesText = document.getElementById("losses");
+var currentWord = document.getElementById("currentWord");
+var guessesLeftText = document.getElementById("guessesLeft");
+var lettersUsed = document.getElementById("lettersUsed");
 
-//Creating words in the game
-var wordOptions = ['Great Smoky Mountains', 'Grand Canyon', 'Yosemite Valley', 'Rocky Mountains', 'Zion', 'Yellowstone', 'Grand Teton', 'Glacier', 'Joshua Tree', 'Cuyahoga Valley', 'Bryce Canyon', 'Hawaii Volcanoes', 'Hot Springs', 'Shenandoah', 'Mount Rainier', 'Death Valley', 'Halekala', 'Sequoia', 'Capitol Reef', 'Badlands', 'Everglades', 'Saguaro', 'Canyonlands', 'Crater Lake', 'Theodore Roosevelt', 'Petrified Forest', 'Wind Cave', 'Kings Canyon', 'Denali', 'Mammoth Cave', 'Mesa Verde', 'Redwood', 'Lassen Volcanic', 'Glacier Bay', 'Biscayne', 'Carlsbad Caverns', 'Virgin Islands', 'Great Sand Dunes', 'Big Bend', 'Channel Islands', 'Kenai Fjords', 'Voyageurs', 'Black Canyon of the Gunnison', 'Pinnacles', 'Guadalupe', 'Great Basin', 'Congaree', 'Wrangell St', 'Dry Tortugas', 'Katmai', 'American Samoa', 'North Cascades', 'Isle Royale', 'Lake Clarke', 'Kobuk Valley', 'Gates of the Arctic'];
-var currentWord = wordOptions[Math.floor(Math.random() * options.length)].split(/(?!$)/u);
-var splice = currentWord.join(' ');
-var lowerSplice = splice.toLowerCase();
-console.log(lowerSplice);
 
-// Captures keyboard input. Depending on the letter pressed it will "call" (execute) different functions.
-document.onkeyup = function (event) {
-    // Captures the key press, converts it to lowercase, and saves it to a variable.
-    var letter = event.key.toLowerCase();
-    // If the letter is equal to the computer guess, run the following functions/methods.
-    console.log(letter);
-
-    if (lowerSplice.includes(letter)) {
-        alert('Yes');
-        console.log(guessesMade);
-    } else {
-        // For-loop...
-        for (var i = 1; i < 2; i++) {
-            //...pushing the letter chosen to the guesses made array
-            guess = letter;
-            guessesMade.push(guess)
-        };
-        console.log(guessesMade);
-        guessesLeft--;
-        console.log(guessesLeft);
-    }
+//initializes the game and calles for a new word
+function start() {
+  wins = 0;
+  losses = 0;
+  guessesLeft = 6;
+  updateData();
+  getSecretWord();
 }
 
-var html = "<p>Press any key to get started!</p>" +
-    "<p>Wins: " + wins + "</p>" +
-    "<p>Current word: </p>" +
-    "<p>Current losses: " + losses + "</p>"+
-    currentWord +
-    "<p>--------------------------------</p>" +
-    "<p>Number of guesses remaining: " + guessesLeft + "</p>" +
-    "<p>Guessed letters: " + guessesMade + "</p>";
 
-document.querySelector('#Stats').innerHTML = html;
-
-
-// need to find a way to hide the letters
-// need to find 
+//updates any page displayed stats
+function updateData() {
+  winsText.innerHTML = wins;
+  lossesText.innerHTML = losses;
+  currentWord.innerHTML = usersArray.join(" ");
+  guessesLeftText.innerHTML = guessesLeft;
+  lettersUsed.innerHTML = wrongWordArray;
+}
 
 
-// loop to replace the letters
-// indexOf to find if value is in the array (if -1, not in the list)
+//select new word, adds to logged, replaces letters with "_" and pushes to usersArray[]
+function getSecretWord() {
+  secretWord = characters[Math.floor(Math.random() * characters.length)];
+  logged = secretWord.split("");
+  for (var x = 0; x < logged.length; x++) {
+    usersArray.push("_");
+  }
+  updateData();
+  console.log(secretWord);
+}
 
-// Notes:
-// if user guesses a correct letter, they still have more guesses and they still haven't solved the word
-//     push letter to guesses array: 
+
+//records input from user
+document.onkeyup = function(event) {
+  userInput = event.key.toLowerCase();
+  console.log(userInput);
+  if (guessesLeft > 0) {
+    indx = logged.indexOf(userInput);
+    if (userInput == logged[indx]) {
+      //if correct prints to document, update stats
+      usersArray[indx] = userInput;
+      updateData();
+      gameWin();
+    } else {
+      //incorrect guess logs wrong guess, decrement guessesLeft
+      guessesLeft--;
+      wrongWordArray.push(userInput);
+      updateData();
+    }
+  } else {
+    //at loss, increase losses and reset game with new word
+    losses++;
+    guessesLeft = 6;
+    usersArray = [];
+    wrongWordArray = [];
+    updateData();
+    getSecretWord();
+  }
+};
+
+
+//restarts game upon win/correct word guess
+function gameWin() {
+  if (usersArray.toString() == logged.toString()) {
+    wins++;
+    guessesLeft = 6
+    usersArray = [];
+    updateData();
+    getSecretWord();
+  }
+}
+
+
+start();
+
+
+
+
+
+
+
+
+
+// //Starting number of Wins
+// var wins = 0;
+
+// //Starting number of losses
+// var losses = 0;
+
+// //Starting number of guesses left
+// var guessesLeft = 15;
+
+// //Creating an empty array for guesses
+// var guessesMade = [];
+// var guess;
+
+// //Creating words in the game
+// var currentWord = wordOptions[Math.floor(Math.random() * options.length)].split(/(?!$)/u);
+// var splice = currentWord.join(' ');
+// var lowerSplice = splice.toLowerCase();
+// console.log(lowerSplice);
+
+// // Captures keyboard input. Depending on the letter pressed it will "call" (execute) different functions.
+// document.onkeyup = function (event) {
+//     // Captures the key press, converts it to lowercase, and saves it to a variable.
+//     var letter = event.key.toLowerCase();
+//     // If the letter is equal to the computer guess, run the following functions/methods.
+//     console.log(letter);
+
+//     if (lowerSplice.includes(letter)) {
+//         alert('Yes');
+//         console.log(guessesMade);
+//     } else {
 //         // For-loop...
-//             for (var i = 1; i < 2; i++) {
+//         for (var i = 1; i < 2; i++) {
 //             //...pushing the letter chosen to the guesses made array
 //             guess = letter;
 //             guessesMade.push(guess)
 //         };
-//     lower guesses left by one: guessesLeft--;
-
-// if the user solves the word:
-//     add one to wins: wins++;
-//     reset guessesleft: guessesLeft = 15;
-//     reset word: currentWord = options[Math.floor(Math.random() * options.length)];
-//     set guesses made to blank: guessesMade = [];
-
-// if the user fails to solve the word:
-//     add one to losses: losses++;
-//     reset guessesleft: guessesLeft = 15;
-//     reset word: currentWord = options[Math.floor(Math.random() * options.length)];
-//     set guesses made to blank: guessesMade = [];    
-
+//         console.log(guessesMade);
+//         guessesLeft--;
+//         console.log(guessesLeft);
+//     }
+// }
 
 
 
